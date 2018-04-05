@@ -1,0 +1,27 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/index.html.twig #}
+
+{% extends "WTGalerieBundle::layout.html.twig" %}
+
+{% block title %}
+  admin - {{ parent() }}
+{% endblock %}
+
+{% block wtgalerie_body %}
+
+  <h2>admin</h2>
+
+  <ul>
+    {% for advert in listAdverts %}
+      <li>
+        <a href="{{ path('wt_galerie_view', {'id': advert.id}) }}">
+          {{ advert.title }}
+        </a>
+        par {{ advert.author }},
+        le {{ advert.date|date('d/m/Y') }}
+      </li>
+    {% else %}
+      <li>Pas (encore !) d'annonces</li>
+    {% endfor %}
+  </ul>
+  <p>vous etes sur la page privée n° {{page}}</p>
+{% endblock %}

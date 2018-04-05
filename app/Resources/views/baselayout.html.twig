@@ -1,0 +1,79 @@
+{# app/Resources/views/baselayout.html.twig#}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    {% block title %}White theo{% endblock %}
+  </title>
+  
+  {% block stylesheets %}
+    {# On charge le CSS de bootstrap depuis le site directement #}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  {% endblock %}
+
+</head>
+
+<body>
+  <div class="container">
+    <div id="header" class="jumbotron">
+      {#title stuf#}
+      <div>
+        <h1>Ma plateforme de galerie</h1>
+        <p>
+          Work in progresse with some assistance like OpenClassrooms'MOOC & SensioLabs.
+        </p>
+        <p>
+          <a class="btn btn-primary btn-lg" href="https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony2">
+            Participer au MOOC »
+          </a>
+        </p>
+      </div>
+
+      {# login stuff#}
+      {% block login %}
+      {% endblock %}
+      
+
+      {#futur menu #}
+      <div>
+        {#futur menu #}
+        <span>M1 (baselayout)</span><span>M2</span><span>M3</span>
+      </div>
+    </div>
+
+
+    {#content menu left#}
+    <div class="row">
+      <div id="menu" class="col-md-3">
+        <h3>Les galerie</h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="{{ path('wt_galerie_home') }}">Accueil</a></li>
+          <li><a href="{{ path('wt_galerie_add') }}">Ajouter une annonce</a></li>
+        </ul>
+
+        <h4>Dernières galerie</h4>
+        {{ render(controller("WTGalerieBundle:Galerie:menu", {'limit': 3})) }}
+      </div>
+      <div id="content" class="col-md-9">
+        {% block body %}
+        {% endblock %}
+      </div>
+    </div>
+    
+    <hr>
+
+    <footer>
+      <p>The life is but a fream © {{ 'now'|date('Y') }} and beyond.</p>
+    </footer>
+  </div>
+
+  {% block javascripts %}
+    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  {% endblock %}
+
+</body>
+</html>

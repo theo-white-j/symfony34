@@ -1,0 +1,29 @@
+# parameters:
+#     mon_parametre: ma_valeur
+
+services:
+#    wt_galerie.example:
+#        class: WT\GalerieBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+    wt_galerie.antispam:
+        class: WT\GalerieBundle\Antispam\WTAntispam
+        #arguments: [] # Tableau d'arguments (ou de service dont anti spam a besoin). %nomDuParametre% , @nomDuService
+        arguments:
+            - "@mailer"
+            - %locale%
+            - 50
+
+
+
+    wt_user.fixture:
+        class: WT\UserBundle\DataFixtures\ORM\LoadUser
+        tags: [doctrine.fixture.orm] #<-- important
+
+    wt_galerie.fixture:
+        class: WT\GalerieBundle\DataFixtures\ORM\LoadGalerie
+        tags: [doctrine.fixture.orm] #<-- important
+    wt_galerieItem.fixture:
+        class: WT\GalerieBundle\DataFixtures\ORM\LoadGalerieItem
+        tags: [doctrine.fixture.orm] #<-- important
+

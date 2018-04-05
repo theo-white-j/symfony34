@@ -1,0 +1,52 @@
+# wt_galerie_hello_the_world:
+#     path:     /hello-world
+#     defaults: { _controller: WTGalerieBundle:Galerie:index }
+
+
+#all route has prefixed /galerie
+wt_galerie_home:
+    path:      /{page}
+    defaults: #{ _controller: WTGalerieBundle:Galerie:index, page: 1 }
+        _controller: WTGalerieBundle:Galerie:index
+        page:        1
+    requirements:
+        page: \d*
+
+wt_galerie_view:
+    path:      /galerie/{id}
+    defaults:
+        _controller: WTGalerieBundle:Galerie:view
+    requirements:
+        id: \d+
+
+wt_galerie_add:
+    path:      /add
+    defaults:
+        _controller: WTGalerieBundle:Galerie:add
+
+wt_galerie_edit:
+    path:      /edit/{id}
+    defaults:
+        _controller: WTGalerieBundle:Galerie:edit
+    requirements:
+        id: \d+
+
+
+wt_galerie_delete:
+    path:      /delete/{id}
+    defaults:
+        _controller: WTGalerieBundle:Galerie:delete
+    requirements:
+        id: \d+
+
+wt_galerie_AdminFoo:
+    path:      /admin/foo/{page}
+    defaults:
+        _controller: WTGalerieBundle:Galerie:adminfoo
+        page:        1
+    requirements:
+        page: \d*
+
+
+
+

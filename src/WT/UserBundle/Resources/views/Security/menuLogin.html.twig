@@ -1,0 +1,9 @@
+{#WT/UserBundle/Resources/views/Security/menulogin.html.twig#}
+    {#{ include('@FOSUser/Security/login_content.html.twig') }#}
+
+
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+    {{ include('@FOSUser/Security/login_content.html.twig') }}
+{% endblock fos_user_content %}

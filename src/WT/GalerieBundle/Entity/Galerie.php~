@@ -1,0 +1,166 @@
+<?php
+
+namespace WT\GalerieBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Galerie
+ *
+ * @ORM\Table(name="galerie")
+ * @ORM\Entity(repositoryClass="WT\GalerieBundle\Repository\GalerieRepository")
+ */
+class Galerie
+{
+    /* onetomany ->galerieitem  see GalerieItem */
+    /*onetoone ->user   see $this->$owner*/
+
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     */
+    private $name;
+
+
+
+
+//@var string
+//@ORM\Column(name="owner", type="string", length=255, nullable=true)
+
+    /**
+     * @ORM\OneToOne(targetEntity="WT\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $owner;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creationdate", type="datetime")
+     */
+    private $creationdate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="editiondate", type="datetime")
+     */
+    private $editiondate;
+
+
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Galerie
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+  
+
+
+
+    /**
+     * Set creationdate
+     *
+     * @param \DateTime $creationdate
+     *
+     * @return Galerie
+     */
+    public function setCreationdate($creationdate)
+    {
+        $this->creationdate = $creationdate;
+
+        return $this;
+    }
+
+    /**
+     * Get creationdate
+     *
+     * @return \DateTime
+     */
+    public function getCreationdate()
+    {
+        return $this->creationdate;
+    }
+
+    /**
+     * Set editiondate
+     *
+     * @param \DateTime $editiondate
+     *
+     * @return Galerie
+     */
+    public function setEditiondate($editiondate)
+    {
+        $this->editiondate = $editiondate;
+
+        return $this;
+    }
+
+    /**
+     * Get editiondate
+     *
+     * @return \DateTime
+     */
+    public function getEditiondate()
+    {
+        return $this->editiondate;
+    }
+
+    public function __construct()
+    {
+        // Par défaut, la date de l'annonce est la date d'aujourd'hui
+    $this->creationdate = new \Datetime();
+    $this->editiondate = $this->creationdate;
+
+    }
+
+    
+
+
+
+
+    
+
+   
+}

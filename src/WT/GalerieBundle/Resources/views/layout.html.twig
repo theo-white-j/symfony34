@@ -1,0 +1,40 @@
+{# {#WT/GalerieBundle/Resources/views/layout.html.twig#}
+{% extends "::baselayout.html.twig" %}
+
+{% block login %}
+	{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+	   <form action="{{ path('fos_user_security_logout') }}" method="get">
+	      <input type="submit" id="_submit" name="_submit" value="LogOut" style="width: 75px" class="btn btn-danger" />
+	   </form>
+	{% else %}
+		{{ render(controller('WTUserBundle:Security:loginmenu',{})) }}
+		{#<p>000</p>
+		{{ render(controller('WTGalerieBundle:Galerie:test',{})) }}
+		<p>000</p>
+		{{ render(controller('WTUserBundle:Security:login')) }}
+		<p>000</p>
+		{{ render(controller('WTUserBundle:Security:loginmenu',{})) }}
+		<p>000</p>#}
+	   {#{ render(controller('FOSUserBundle:Security:loginmenu')) }#}
+	   
+	   {##}
+	{% endif %}
+
+{% endblock %}
+      
+
+{% block title %}
+  Annonces - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+  {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
+  <h1>Gallerie</h1>
+
+  <hr>
+
+  {# On définit un nouveau bloc, que les vues du bundle pourront remplir #}
+  {% block wtgalerie_body %}
+  {% endblock %}
+
+{% endblock %}
