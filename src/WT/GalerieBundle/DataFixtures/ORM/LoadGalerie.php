@@ -8,15 +8,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use WT\GalerieBundle\Entity\Galerie;
 #use WT\UserBundle\Entity\User;
 use WT\UserBundle\DataFixtures\ORM\LoadUser;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+#use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class LoadGalerie extends Fixture implements DependentFixtureInterface, ContainerAwareInterface
+#class LoadGalerie extends Fixture implements DependentFixtureInterface, ContainerAwareInterface
+class LoadGalerie extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     public const GALERIE_REFERENCE = 'galref';
-
 
     // Dans l'argument de la méthode load, l'objet $manager est l'EntityManager
     /**
@@ -33,8 +34,8 @@ class LoadGalerie extends Fixture implements DependentFixtureInterface, Containe
           'test4'
         );
 
-        $registerdAdmin=$this->getReference(LoadUser::ADMIN_USER_REFERENCE);
-//echo " regadmin  :  ";var_dump($registerdAdmin);
+        #$registerdAdmin=$this->getReference(LoadUser::ADMIN_USER_REFERENCE);
+        $registerdAdmin = $this->getReference('admin-user');
         foreach ($names as $index=>$name) {
           // On crée la catégorie
           $galerie = new Galerie();
@@ -47,24 +48,30 @@ class LoadGalerie extends Fixture implements DependentFixtureInterface, Containe
           //si on est dans la 1ere galerie on cree une reference pour la donner a LoadGalerieItem
           if ($index == 0) {
              $this->addReference(self::GALERIE_REFERENCE, $galerie);
-             echo "1er gal id:     ";var_dump($galerie->getId());
-             echo "1er gal name:     ";var_dump($galerie->getName());
           }
           
         }
         // On déclenche l'enregistrement de toutes les catégories
-        echo "const          "; var_dump(self::GALERIE_REFERENCE);
-        
-        echo "end galid:     ";var_dump($galerie->getId());
-        echo "end gal name:     "; var_dump($galerie->getName());
     }
 
-    public function getDependencies()
+
+
+
+    /**
+     * Get the order of this fixture
+     * @return integer
+     */
+    public function getOrder()
+    {
+      return 2;
+    }
+
+    /*public function getDependencies()
     {
         return array(
             LoadUser::class,
         );
-    }
+    }*/
 
 
     /**

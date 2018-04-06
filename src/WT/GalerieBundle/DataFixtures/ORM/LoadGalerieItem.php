@@ -6,14 +6,15 @@ use WT\GalerieBundle\Entity\GalerieItem;
 use WT\GalerieBundle\Entity\Galerie;
 #use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-#use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+#use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 
-#class LoadGalerieItem extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
-class LoadGalerieItem extends Fixture implements DependentFixtureInterface , ContainerAwareInterface
+
+class LoadGalerieItem extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
+#class LoadGalerieItem extends Fixture implements DependentFixtureInterface , ContainerAwareInterface
 {
     // Dans l'argument de la méthode load, l'objet $manager est l'EntityManager
     /**
@@ -56,20 +57,20 @@ class LoadGalerieItem extends Fixture implements DependentFixtureInterface , Con
       $this->container = $container;
     }
 
-    /*
-    / **
+    
+    /**
      * Get the order of this fixture
      * @return integer
-     * /
+     */
     public function getOrder()
     {
-      return 1;
-    }*/
+      return 3;
+    }
 
-    public function getDependencies()
+    /*public function getDependencies()
     {
         return array(
             LoadGalerie::class,
         );
-    }
+    }*/
 }

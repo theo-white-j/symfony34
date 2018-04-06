@@ -28,7 +28,7 @@ class Galerie
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255, unique=false)
      */
     private $name;
 
@@ -39,8 +39,8 @@ class Galerie
 //@ORM\Column(name="owner", type="string", length=255, nullable=true)
 
     /**
-     * @ORM\OneToOne(targetEntity="WT\UserBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\ManyToOne(targetEntity="WT\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false, unique=false)
      */
     private $owner;
 
@@ -160,7 +160,5 @@ class Galerie
 
 
 
-    
 
-   
 }

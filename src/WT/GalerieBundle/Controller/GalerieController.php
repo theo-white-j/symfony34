@@ -45,60 +45,20 @@ class GalerieController extends Controller
 			throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
 		}
 
-		// Ici, on récupérera la liste des annonces, puis on la passera au template
-
-
-		$listAdverts = array(
-			array(
-				'title'   => 'Recherche développpeur Symfony',
-				'id'      => 1,
-				'author'  => 'Alexandre',
-				'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
-				'date'    => new \Datetime()),
-			array(
-				'title'   => 'Mission de webmaster',
-				'id'      => 2,
-				'author'  => 'Hugo',
-				'content' => 'Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…',
-				'date'    => new \Datetime()),
-			array(
-				'title'   => 'Offre de stage webdesigner',
-				'id'      => 3,
-				'author'  => 'Mathieu',
-				'content' => 'Nous proposons un poste pour webdesigner. Blabla…',
-				'date'    => new \Datetime())
-		);
+		$em = $this->getDoctrine()->getManager();
+		$repository = $em->getRepository('WTGalerieBundle:Galerie');
+		$galeries = $repository->findAll();
 
 		// Et modifiez le 2nd argument pour injecter notre liste
 		return $this->render('WTGalerieBundle:Galerie:index.html.twig', array(
-			'listAdverts' => $listAdverts,
+			'galeries' => $galeries,
 			'page'=> $page
 		));
-
-		// Mais pour l'instant, on ne fait qu'appeler le template
-		#return $this->render('WTGalerieBundle:Galerie:index.html.twig');
-		/*return $this->render('WTGalerieBundle:Galerie:index.html.twig', array(
-			'listAdverts' => array()
-		));*/
-
     }
 
     public function viewAction($id)
   	{
-		/*$advert = array(
-
-			'title'   => 'Recherche développpeur Symfony2',
-			'id'      => $id,
-			'author'  => 'Alexandre',
-			'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-			'date'    => new \Datetime()
-    	);
-
-    	return $this->render('WTGalerieBundle:Galerie:view.html.twig', array(
-			'advert' => $advert
-		));*/
-
-
+		
 		// On récupère le repository
 		$repository = $this->getDoctrine()->getManager()->getRepository('WTGalerieBundle:Galerie');
 
@@ -106,17 +66,26 @@ class GalerieController extends Controller
     	$galerie = $repository->find($id);
     	//same $galerie = $this->getDoctrine()->getManager()->find('WTgalerieBundle:Galerie', $id);
 
-    	
     	// $advert est donc une instance de OC\PlatformBundle\Entity\Advert
     	// ou null si l'id $id  n'existe pas, d'où ce if :
     	if (null === $galerie) {
     		throw new NotFoundHttpException("La galerie avec l'id ".$id." n'existe pas.");
     	}
+    	$GalItemRepository = $this->getDoctrine()->getManager()->getRepository('WTGalerieBundle:GalerieItem');
+    	$galerieItems = $GalItemRepository->findBy(
+			array('galerie' 		=> $galerie), // Critere
+			array('creationdate' 	=> 'desc'),   // Tri
+			6,                              	  // Limite
+			0                               	  // Offset
+    	);
+//var_dump($galerieItems);
 
     	// Le render ne change pas, on passait avant un tableau, maintenant un objet
     	return $this->render('WTGalerieBundle:Galerie:view.html.twig', array(
-      		'galerie' => $galerie
+      		'galerie' 	=> $galerie,
+      		'galItems' 	=> $galerieItems
     	));
+
   	}
 
 

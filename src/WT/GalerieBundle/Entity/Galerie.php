@@ -39,8 +39,8 @@ class Galerie
 //@ORM\Column(name="owner", type="string", length=255, nullable=true)
 
     /**
-     * @ORM\OneToOne(targetEntity="WT\UserBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=true, unique=false)
+     * @ORM\ManyToOne(targetEntity="WT\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false, unique=false)
      */
     private $owner;
 
@@ -160,9 +160,7 @@ class Galerie
 
 
 
-    
 
-   
 
     /**
      * Set owner
@@ -171,7 +169,7 @@ class Galerie
      *
      * @return Galerie
      */
-    public function setOwner(\WT\UserBundle\Entity\User $owner = null)
+    public function setOwner(\WT\UserBundle\Entity\User $owner)
     {
         $this->owner = $owner;
 

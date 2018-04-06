@@ -8,19 +8,23 @@
 
 {% block wtgalerie_body %}
 
-  <h2>Liste des annonces</h2>
+  <h2>Liste des galeries</h2>
 
   <ul>
-    {% for advert in listAdverts %}
+    {% for galerie in galeries %}
       <li>
-        <a href="{{ path('wt_galerie_view', {'id': advert.id}) }}">
-          {{ advert.title }}
+        <a href="{{ path('wt_galerie_view', {'id': galerie.id}) }}">
+          {{ galerie.name }}
         </a>
-        par {{ advert.author }},
-        le {{ advert.date|date('d/m/Y') }}
+        
+        crée le {{ galerie.creationdate|date('d/m/Y') }},  par {{ galerie.owner.username }}
+        édité le {{ galerie.editiondate|date('d/m/Y') }}
+        {% if galerie.creationdate == galerie.editiondate %}
+          ,  Same date!!!!
+        {% endif %}
       </li>
     {% else %}
-      <li>Pas (encore !) d'annonces</li>
+      <li>Pas (encore !) de galerie ... (use fetures)</li>
     {% endfor %}
   </ul>
   <p>vous etes sur la page {{page}}</p>

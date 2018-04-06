@@ -1,18 +1,46 @@
 {% extends "WTGalerieBundle::layout.html.twig" %}
 
 {% block title %}
-  Lecture d'une annonce - {{ parent() }}
+  Galerie: {{galerie.name}} - {{ parent() }}
 {% endblock %}
 
 {% block wtgalerie_body %}
 {{ dump(galerie) }}
   <h2>{{ galerie.name }}</h2>
-  <i>Par {{ galerie.owner }}, le {{ galerie.creationdate|date('d/m/Y') }}</i>
+  <i>
+      crée le {{ galerie.creationdate|date('d/m/Y') }},  par {{ galerie.owner.username }}
+      {% if galerie.creationdate != galerie.editiondate %}
+        ,  édité le {{ galerie.editiondate|date('d/m/Y') }}
+      {% endif %}
+  </i>
 
   <div class="well">
-    a venir!
-    {#{ galerie.content }#}
+
+    {% if galItems %}
+      {% for galItem in galItems %}
+          {{ dump(galItem) }}
+        <div>
+          <p>{{galItem.name}}</p>
+          <p>{{galItem.info}}</p>
+          <p>{{galItem.type}}</p>
+          <p>{{galItem.url}}</p>
+          <p>{{galItem.path}}</p>
+          <p>{% if  galItem.creationdate ==  galItem.editiondate %}
+              crée le {{ galItem.creationdate|date('d/m/Y') }}
+            {% else %}
+              édité le {{ galItem.editiondate|date('d/m/Y') }}
+            {% endif %}
+          </p>
+        </div>
+
+
+          
+      {% endfor %}
+    {% endif %}
+    
   </div>
+
+
 
   <p>
     <a href="{{ path('wt_galerie_home') }}" class="btn btn-default">
