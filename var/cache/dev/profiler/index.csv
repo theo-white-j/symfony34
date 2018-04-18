@@ -94,3 +94,13 @@ ce66f2,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=
 880b5e,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Dfr%26_controller%3DWTUserBundle%253ASecurity%253Aloginmenu,1523018849,61dff7,200
 03c050,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Dfr%26_controller%3DWTGalerieBundle%253AGalerie%253Amenu,1523018849,61dff7,200
 61dff7,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/galerie/galerie/45,1523018849,,200
+8b2f64,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Dfr%26_controller%3DWTUserBundle%253ASecurity%253Aloginmenu,1524042795,578f82,200
+399243,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Dfr%26_controller%3DWTGalerieBundle%253AGalerie%253Amenu,1524042795,578f82,200
+578f82,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/galerie/edit/45,1524042795,,200
+33a4ce,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Dfr%26_controller%3DWTUserBundle%253ASecurity%253Aloginmenu,1524043556,e04e60,200
+7d5c0f,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Dfr%26_controller%3DWTGalerieBundle%253AGalerie%253Amenu,1524043556,e04e60,200
+de873c,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/galerie/galerie/45,1524043556,e04e60,200
+e04e60,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/galerie/galerie/45,1524043556,,500
+429b32,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Dfr%26_controller%3DWTUserBundle%253ASecurity%253Aloginmenu,1524043567,186631,200
+ce5a92,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Dfr%26_controller%3DWTGalerieBundle%253AGalerie%253Amenu,1524043567,186631,200
+186631,127.0.0.1,GET,http://localhost/whitetheo/web/app_dev.php/galerie/galerie/45,1524043567,,200

@@ -104,14 +104,13 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
 
     ";
         // line 19
-        if ((isset($context["galItems"]) || array_key_exists("galItems", $context) ? $context["galItems"] : (function () { throw new Twig_Error_Runtime('Variable "galItems" does not exist.', 19, $this->source); })())) {
+        if ( !(isset($context["galItems"]) || array_key_exists("galItems", $context) ? $context["galItems"] : (function () { throw new Twig_Error_Runtime('Variable "galItems" does not exist.', 19, $this->source); })())) {
             // line 20
             echo "      ";
             $context['_parent'] = $context;
             $context['_seq'] = twig_ensure_traversable((isset($context["galItems"]) || array_key_exists("galItems", $context) ? $context["galItems"] : (function () { throw new Twig_Error_Runtime('Variable "galItems" does not exist.', 20, $this->source); })()));
             foreach ($context['_seq'] as $context["_key"] => $context["galItem"]) {
                 // line 21
-                echo "          ";
                 echo $this->extensions['Symfony\Bridge\Twig\Extension\DumpExtension']->dump($this->env, $context, $context["galItem"]);
                 echo "
         <div>
@@ -145,14 +144,16 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
             ";
                 } else {
                     // line 31
-                    echo "                édité le ";
+                    echo "              édité le ";
                     echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["galItem"], "editiondate", array()), "d/m/Y"), "html", null, true);
                     echo "
             ";
                 }
                 // line 33
                 echo "          </p>
-        </div>
+          ";
+                // line 35
+                echo "        </div>
 
 
           
@@ -161,10 +162,10 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['galItem'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 39
+            // line 40
             echo "    ";
         }
-        // line 40
+        // line 41
         echo "    
   </div>
 
@@ -172,22 +173,22 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
 
   <p>
     <a href=\"";
-        // line 46
+        // line 47
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("wt_galerie_home");
         echo "\" class=\"btn btn-default\">
       <i class=\"glyphicon glyphicon-chevron-left\"></i>
       Retour à la liste
     </a>
     <a href=\"";
-        // line 50
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("wt_galerie_edit", array("id" => twig_get_attribute($this->env, $this->source, (isset($context["galerie"]) || array_key_exists("galerie", $context) ? $context["galerie"] : (function () { throw new Twig_Error_Runtime('Variable "galerie" does not exist.', 50, $this->source); })()), "id", array()))), "html", null, true);
+        // line 51
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("wt_galerie_edit", array("id" => twig_get_attribute($this->env, $this->source, (isset($context["galerie"]) || array_key_exists("galerie", $context) ? $context["galerie"] : (function () { throw new Twig_Error_Runtime('Variable "galerie" does not exist.', 51, $this->source); })()), "id", array()))), "html", null, true);
         echo "\" class=\"btn btn-default\">
       <i class=\"glyphicon glyphicon-edit\"></i>
       Modifier la galerie
     </a>
     <a href=\"";
-        // line 54
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("wt_galerie_delete", array("id" => twig_get_attribute($this->env, $this->source, (isset($context["galerie"]) || array_key_exists("galerie", $context) ? $context["galerie"] : (function () { throw new Twig_Error_Runtime('Variable "galerie" does not exist.', 54, $this->source); })()), "id", array()))), "html", null, true);
+        // line 55
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("wt_galerie_delete", array("id" => twig_get_attribute($this->env, $this->source, (isset($context["galerie"]) || array_key_exists("galerie", $context) ? $context["galerie"] : (function () { throw new Twig_Error_Runtime('Variable "galerie" does not exist.', 55, $this->source); })()), "id", array()))), "html", null, true);
         echo "\" class=\"btn btn-danger\">
       <i class=\"glyphicon glyphicon-trash\"></i>
       Supprimer la galerie
@@ -215,7 +216,7 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
 
     public function getDebugInfo()
     {
-        return array (  190 => 54,  183 => 50,  176 => 46,  168 => 40,  165 => 39,  154 => 33,  148 => 31,  142 => 29,  140 => 28,  136 => 27,  132 => 26,  128 => 25,  124 => 24,  120 => 23,  114 => 21,  109 => 20,  107 => 19,  101 => 15,  95 => 13,  93 => 12,  87 => 11,  82 => 9,  78 => 8,  69 => 7,  54 => 4,  45 => 3,  15 => 1,);
+        return array (  191 => 55,  184 => 51,  177 => 47,  169 => 41,  166 => 40,  156 => 35,  153 => 33,  147 => 31,  141 => 29,  139 => 28,  135 => 27,  131 => 26,  127 => 25,  123 => 24,  119 => 23,  114 => 21,  109 => 20,  107 => 19,  101 => 15,  95 => 13,  93 => 12,  87 => 11,  82 => 9,  78 => 8,  69 => 7,  54 => 4,  45 => 3,  15 => 1,);
     }
 
     public function getSourceContext()
@@ -238,9 +239,9 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
 
   <div class=\"well\">
 
-    {% if galItems %}
+    {% if not galItems %}
       {% for galItem in galItems %}
-          {{ dump(galItem) }}
+{{ dump(galItem) }}
         <div>
           <p>{{galItem.name}}</p>
           <p>{{galItem.info}}</p>
@@ -250,9 +251,10 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
           <p>{% if  galItem.creationdate ==  galItem.editiondate %}
               crée le {{ galItem.creationdate|date('d/m/Y') }}
             {% else %}
-                édité le {{ galItem.editiondate|date('d/m/Y') }}
+              édité le {{ galItem.editiondate|date('d/m/Y') }}
             {% endif %}
           </p>
+          {# {% if not loop.last %}, {% endif %} #}
         </div>
 
 

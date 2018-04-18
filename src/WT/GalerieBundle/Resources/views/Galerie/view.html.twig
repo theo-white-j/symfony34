@@ -16,9 +16,9 @@
 
   <div class="well">
 
-    {% if galItems %}
+    {% if not galItems %}
       {% for galItem in galItems %}
-          {{ dump(galItem) }}
+{{ dump(galItem) }}
         <div>
           <p>{{galItem.name}}</p>
           <p>{{galItem.info}}</p>
@@ -31,6 +31,7 @@
               édité le {{ galItem.editiondate|date('d/m/Y') }}
             {% endif %}
           </p>
+          {# {% if not loop.last %}, {% endif %} #}
         </div>
 
 
