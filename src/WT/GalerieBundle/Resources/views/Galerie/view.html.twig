@@ -15,8 +15,8 @@
   </i>
 
   <div class="well">
-
-    {% if not galItems %}
+{# {{ dump(galerie.getGalerieitems().first ) }} #}
+    {% if not galItems.empty %}
       {% for galItem in galItems %}
 {{ dump(galItem) }}
         <div>

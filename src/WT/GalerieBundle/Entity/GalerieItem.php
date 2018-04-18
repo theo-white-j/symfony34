@@ -1,8 +1,16 @@
 <?php
 
 namespace WT\GalerieBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
+
+/*
+!!! use galerie->addGalerieitem never galerieitem->setgalerie()
+
+
+*/
+
+
+
 
 /**
  * GalerieItem
@@ -14,7 +22,7 @@ class GalerieItem
 {
     /* manytoone ->galerie*/
     /**
-     * @ORM\ManyToOne(targetEntity="WT\GalerieBundle\Entity\Galerie",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="WT\GalerieBundle\Entity\Galerie", inversedBy="galerieitems", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $galerie;

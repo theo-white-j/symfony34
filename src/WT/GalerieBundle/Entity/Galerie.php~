@@ -45,6 +45,14 @@ class Galerie
     private $owner;
 
     /**
+     * @ORM\OneToMany(targetEntity="WT\galerieBundle\Entity\GalerieItem", mappedBy="galerie")
+     */
+    private $galerieitems; // Notez le « s », une annonce est liée à plusieurs candidatures
+
+
+
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="creationdate", type="datetime")
@@ -161,4 +169,28 @@ class Galerie
 
 
 
+
+    /**
+     * Set owner
+     *
+     * @param \WT\UserBundle\Entity\User $owner
+     *
+     * @return Galerie
+     */
+    public function setOwner(\WT\UserBundle\Entity\User $owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \WT\UserBundle\Entity\User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
 }

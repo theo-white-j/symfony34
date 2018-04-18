@@ -71,13 +71,14 @@ class GalerieController extends Controller
     	if (null === $galerie) {
     		throw new NotFoundHttpException("La galerie avec l'id ".$id." n'existe pas.");
     	}
-    	$GalItemRepository = $this->getDoctrine()->getManager()->getRepository('WTGalerieBundle:GalerieItem');
+    	/*$GalItemRepository = $this->getDoctrine()->getManager()->getRepository('WTGalerieBundle:GalerieItem');
     	$galerieItems = $GalItemRepository->findBy(
 			array('galerie' 		=> $galerie), // Critere
 			array('creationdate' 	=> 'desc'),   // Tri
 			6,                              	  // Limite
 			0                               	  // Offset
-    	);
+    	);*/
+    	$galerieItems=$galerie->getGalerieitems();
 //var_dump($galerieItems);
 
     	// Le render ne change pas, on passait avant un tableau, maintenant un objet

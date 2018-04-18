@@ -1,8 +1,15 @@
 <?php
 
 namespace WT\GalerieBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
+/*
+!!! use galerie->addGalerieitem never galerieitem->setgalerie()
+
+
+*/
+
 
 /**
  * Galerie
@@ -43,6 +50,14 @@ class Galerie
      * @ORM\JoinColumn(nullable=false, unique=false)
      */
     private $owner;
+
+    /**
+     * @ORM\OneToMany(targetEntity="WT\GalerieBundle\Entity\GalerieItem", mappedBy="galerie")
+     */
+    private $galerieitems; // Notez le « s », une annonce est liée à plusieurs candidatures
+
+
+
 
     /**
      * @var \DateTime
@@ -152,6 +167,7 @@ class Galerie
         // Par défaut, la date de l'annonce est la date d'aujourd'hui
     $this->creationdate = new \Datetime();
     $this->editiondate = $this->creationdate;
+    $this->galerieitems = new ArrayCollection();
 
     }
 
@@ -184,5 +200,44 @@ class Galerie
     public function getOwner()
     {
         return $this->owner;
+    }
+
+    /**
+     * Add galerieitem
+     *
+     * @param \WT\galerieBundle\Entity\GalerieItem $galerieitem
+     *
+     * @return Galerie
+     */
+    public function addGalerieitem(\WT\galerieBundle\Entity\GalerieItem $galerieitem)
+    {
+
+        $this->galerieitems[] = $galerieitem;
+        // On lie le galerieItem  à la galerie
+        $galerieitem->setGalerie($this);
+        return $this;
+    }
+
+    /**
+     * Remove galerieitem
+     *
+     * @param \WT\galerieBundle\Entity\GalerieItem $galerieitem
+     */
+    public function removeGalerieitem(\WT\galerieBundle\Entity\GalerieItem $galerieitem)
+    {
+        $this->galerieitems->removeElement($galerieitem);
+        
+        // Et si notre relation était facultative (nullable=true, ce qui n'est pas notre cas ici attention) :        
+        // $application->setAdvert(null);
+    }
+
+    /**
+     * Get galerieitems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGalerieitems()
+    {
+        return $this->galerieitems;
     }
 }

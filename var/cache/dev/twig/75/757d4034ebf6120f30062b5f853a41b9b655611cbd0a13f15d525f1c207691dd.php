@@ -101,10 +101,10 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
         echo "  </i>
 
   <div class=\"well\">
-
-    ";
+";
         // line 19
-        if ( !(isset($context["galItems"]) || array_key_exists("galItems", $context) ? $context["galItems"] : (function () { throw new Twig_Error_Runtime('Variable "galItems" does not exist.', 19, $this->source); })())) {
+        echo "    ";
+        if ( !twig_get_attribute($this->env, $this->source, (isset($context["galItems"]) || array_key_exists("galItems", $context) ? $context["galItems"] : (function () { throw new Twig_Error_Runtime('Variable "galItems" does not exist.', 19, $this->source); })()), "empty", array())) {
             // line 20
             echo "      ";
             $context['_parent'] = $context;
@@ -216,7 +216,7 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
 
     public function getDebugInfo()
     {
-        return array (  191 => 55,  184 => 51,  177 => 47,  169 => 41,  166 => 40,  156 => 35,  153 => 33,  147 => 31,  141 => 29,  139 => 28,  135 => 27,  131 => 26,  127 => 25,  123 => 24,  119 => 23,  114 => 21,  109 => 20,  107 => 19,  101 => 15,  95 => 13,  93 => 12,  87 => 11,  82 => 9,  78 => 8,  69 => 7,  54 => 4,  45 => 3,  15 => 1,);
+        return array (  191 => 55,  184 => 51,  177 => 47,  169 => 41,  166 => 40,  156 => 35,  153 => 33,  147 => 31,  141 => 29,  139 => 28,  135 => 27,  131 => 26,  127 => 25,  123 => 24,  119 => 23,  114 => 21,  109 => 20,  106 => 19,  101 => 15,  95 => 13,  93 => 12,  87 => 11,  82 => 9,  78 => 8,  69 => 7,  54 => 4,  45 => 3,  15 => 1,);
     }
 
     public function getSourceContext()
@@ -238,8 +238,8 @@ class __TwigTemplate_90ff0094fade98aebf8bcb6b0cabad3e63379b7583aaf43a46fc8d87f63
   </i>
 
   <div class=\"well\">
-
-    {% if not galItems %}
+{# {{ dump(galerie.getGalerieitems().first ) }} #}
+    {% if not galItems.empty %}
       {% for galItem in galItems %}
 {{ dump(galItem) }}
         <div>

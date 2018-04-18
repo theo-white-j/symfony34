@@ -14,7 +14,7 @@ class GalerieItem
 {
     /* manytoone ->galerie*/
     /**
-     * @ORM\ManyToOne(targetEntity="WT\GalerieBundle\Entity\Galerie")
+     * @ORM\ManyToOne(targetEntity="WT\GalerieBundle\Entity\Galerie", inversedBy="galerieitems", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $galerie;
@@ -370,5 +370,28 @@ class GalerieItem
     {
         return $this->extention;
     }
-}
 
+    /**
+     * Set galerie
+     *
+     * @param \WT\GalerieBundle\Entity\Galerie $galerie
+     *
+     * @return GalerieItem
+     */
+    public function setGalerie(\WT\GalerieBundle\Entity\Galerie $galerie)
+    {
+        $this->galerie = $galerie;
+
+        return $this;
+    }
+
+    /**
+     * Get galerie
+     *
+     * @return \WT\GalerieBundle\Entity\Galerie
+     */
+    public function getGalerie()
+    {
+        return $this->galerie;
+    }
+}
