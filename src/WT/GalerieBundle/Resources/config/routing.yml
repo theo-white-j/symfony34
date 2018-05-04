@@ -47,6 +47,15 @@ wt_galerie_AdminFoo:
     requirements:
         page: \d*
 
+wt_galerie_test:
+    path:      /test
+    defaults:
+        _controller: WTGalerieBundle:Galerie:test
+#        page:        1
+#    requirements:
+#        page: \d*
+
+
 
 
 

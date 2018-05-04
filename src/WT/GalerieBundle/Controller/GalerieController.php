@@ -4,39 +4,43 @@
 namespace WT\GalerieBundle\Controller;
 
 use WT\GalerieBundle\Entity\Galerie;
+use WT\GalerieBundle\Form\GalerieType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-#use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response;//only use by testAction funcion
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+//use Doctrine\Common\Collections\Selectable 
+
 
 class GalerieController extends Controller
 {
 
 	 public function menuAction($limit)
 	{
-		// On fixe en dur une liste ici, bien entendu par la suite
-		// on la récupérera depuis la BDD !
-		$listAdverts = array(
-			array('id' => 2, 'title' => 'Recherche développeur Symfony'),
-			array('id' => 5, 'title' => 'Mission de webmaster'),
-			array('id' => 9, 'title' => 'Offre de stage webdesigner')
+		$em = $this->getDoctrine()->getManager();
+		$repository = $em->getRepository('WTGalerieBundle:Galerie');
+		$listgals2 = $repository->findAll();
+		/*rename and view for galerie*/
+		$listgals = $repository->findBy(
+			//array('author' => 'Alexandre'), // Critere
+			array(),
+			array('editiondate' => 'desc'),        // Tri  'asc' or 'desc'
+			$limit,                              // Limite
+			0                               // Offset
 		);
-
+		
 		return $this->render('WTGalerieBundle:Galerie:menu.html.twig', array(
 			// Tout l'intérêt est ici : le contrôleur passe
 			// les variables nécessaires au template !
-			'listAdverts' => $listAdverts
+			'listgals' => $listgals,
+			'listgals2'=>$listgals2
 		));
 	}
 
 
     public function indexAction($page)
     {
-        
-        #return new Response("Notre propre Hello World !");
-    	/*$content = $this->get('templating')->render('WTGalerieBundle:Galerie:index.html.twig', array('nom' => 'winzou') );
-    	return new Response($content);*/
-
+       
     	// On ne sait pas combien de pages il y a
     	// Mais on sait qu'une page doit être supérieure ou égale à 1
 		if ($page < 1) {
@@ -44,17 +48,32 @@ class GalerieController extends Controller
 			// une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
 			throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
 		}
+		// Ici je fixe le nombre d'annonces par page à 3
+
+		// Mais bien sûr il faudrait utiliser un paramètre, et y accéder via $this->container->getParameter('nb_per_page')
+		$nbPerPage = 3;
 
 		$em = $this->getDoctrine()->getManager();
 		$repository = $em->getRepository('WTGalerieBundle:Galerie');
-		$galeries = $repository->findAll();
+		//$galeries = $repository->findAll();
+		$galeries = $repository->getGaleries($page, $nbPerPage);
+
+		 // On calcule le nombre total de pages grâce au count($listAdverts) qui retourne le nombre total d'annonces
+    	$nbPages = ceil(count($galeries)/$nbPerPage);
+
+    	// Si la page n'existe pas, on retourne une 404
+    	if ($page > $nbPages) {
+      		throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+    	}
 
 		// Et modifiez le 2nd argument pour injecter notre liste
 		return $this->render('WTGalerieBundle:Galerie:index.html.twig', array(
 			'galeries' => $galeries,
+			'nbPages'     => $nbPages,
 			'page'=> $page
 		));
     }
+
 
     public function viewAction($id)
   	{
@@ -79,7 +98,6 @@ class GalerieController extends Controller
 			0                               	  // Offset
     	);*/
     	$galerieItems=$galerie->getGalerieitems();
-//var_dump($galerieItems);
 
     	// Le render ne change pas, on passait avant un tableau, maintenant un objet
     	return $this->render('WTGalerieBundle:Galerie:view.html.twig', array(
@@ -92,101 +110,101 @@ class GalerieController extends Controller
 
   	public function addAction(Request $request)
 	{
-		/*$session = $request->getSession();
-
-		// Bien sûr, cette méthode devra réellement ajouter l'annonce
-
-		// Mais faisons comme si c'était le cas
-		$session->getFlashBag()->add('info', 'Annonce bien enregistrée');
-
-		// Le « flashBag » est ce qui contient les messages flash dans la session
-		// Il peut bien sûr contenir plusieurs messages :
-		$session->getFlashBag()->add('info', 'Oui oui, elle est bien enregistrée !');
-
-		// Puis on redirige vers la page de visualisation de cette annonce
-		return $this->redirectToRoute('wt_galerie_view', array('id' => 5));*/
-
-
-    	// La gestion d'un formulaire est particulière, mais l'idée est la suivante :
-
-
-    	// Si la requête est en POST, c'est que le visiteur a soumis le formulaire
-
-    	/*if ($request->isMethod('POST')) {
-      		// Ici, on s'occupera de la création et de la gestion du formulaire
-      		$request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-      		// Puis on redirige vers la page de visualisation de cettte annonce
-      		return $this->redirectToRoute('wt_galerie_view', array('id' => 5));
-    	}
-
-		// On récupère le service
-		$antispam = $this->container->get('wt_galerie.antispam');
-
-		// Je pars du principe que $text contient le texte d'un message 	quelconque
-		$text = '...';
-		if ($antispam->isSpam($text)) {
-			throw new \Exception('Votre message a été détecté comme spam !');
-		}
-
-		// Ici le message n'est pas un spam
-
-    	// Si on n'est pas en POST, alors on affiche le formulaire
-    	return $this->render('WTGalerieBundle:Galerie:add.html.twig');*/
-
-
-
-
+	
     	// Création de l'entité
-	    $gal = new Galerie();
-	    $gal->setName('Recherche développeur Symfony.');
-	    $gal->SetOwner('Alexandre');
-	   // $gal->setDesc("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…");
-	    // On peut ne pas définir ni la date ni la publication,
-	    // car ces attributs sont définis automatiquement dans le constructeur
+	    $galerie = new Galerie();
+	    $form = $this->get('form.factory')->create(GalerieType::class, $galerie);
+	    // <=====> $form = $this->createForm(AdvertType::class, $advert)
+	    //$form =  $this->createForm(GalerieType::class, $galerie);
 
-	    // On récupère l'EntityManager
-	    $em = $this->getDoctrine()->getManager();
+	    // Si la requête est en POST
+		if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($galerie);
+			$em->flush();
 
-	    // Étape 1 : On « persiste » l'entité
-	    $em->persist($gal);
-//var_dump($gal);
-	    // Étape 2 : On « flush » tout ce qui a été persisté avant
-	    $em->flush();
+			$request->getSession()->getFlashBag()->add('notice', 'galerie bien ajouté.');
 
-	    // Reste de la méthode qu'on avait déjà écrit
-	    if ($request->isMethod('POST')) {
-	      $request->getSession()->getFlashBag()->add('notice', 'galerie bien enregistrée.');
-
-	      // Puis on redirige vers la page de visualisation de cettte annonce
-	      return $this->redirectToRoute('wt_galerie_view', array('id' => $gal->getId()));
-	    }
-
-	    // Si on n'est pas en POST, alors on affiche le formulaire
-	    return $this->render('WTGalerieBundle:Galerie:add.html.twig', array('Galerie' => $gal));
+			// On redirige vers la page de visualisation de l'annonce nouvellement créée
+			return $this->redirect($this->generateUrl('wt_galerie_view', array('id' => $galerie->getId())));
+		}
+	    // À ce stade, le formulaire n'est pas valide car :
+	    // - Soit la requête est de type GET, donc le visiteur vient d'arriver sur la page et veut voir le formulaire
+	    // - Soit la requête est de type POST, mais le formulaire contient des valeurs invalides, donc on l'affiche de nouveau
+	    return $this->render('WTGalerieBundle:Galerie:add.html.twig', array(
+	    	'form' => $form->createView(),
+	    ));
 
 	}
+
 
 	public function editAction($id, Request $request)
 	{
 
-		$advert = array(
-			'title'   => 'Recherche développpeur Symfony',
-			'id'      => $id,
-			'author'  => 'Alexandre',
-			'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
-			'date'    => new \Datetime()
-		);
+		$em = $this->getDoctrine()->getManager();
+		// On récupère l'entité correspondant à l'id $id
+		$galerie = $em->getRepository('WTGalerieBundle:Galerie')->find($id);
+		// Si l'annonce n'existe pas, on affiche une erreur 404
+		if ($galerie == null) {
+			throw $this->createNotFoundException("La galerie avec l'id ".$id." n'existe pas.");
+		}
 
-    	return $this->render('WTGalerieBundle:Galerie:edit.html.twig', array(
-      		'advert' => $advert
-    	));
+		$form =  $this->createForm(GalerieType::class, $galerie);
+		$form->handleRequest($request);
+
+		////if ($form->isSubmitted() && $form->isValid()) {
+		if ($request->isMethod('POST') && $form->isValid()){
+			/*// On l'enregistre notre objet $advert dans la base de données, par exemple
+			$galerie= $form->getData();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($galerie);*/
+			// Inutile de persister ici, Doctrine connait déjà notre annonce
+			$em->flush();
+
+			$request->getSession()->getFlashBag()->add('notice', 'Galerie bien modifiée.');
+
+			// On redirige vers la page de visualisation de l'annonce nouvellement créée
+			return $this->redirect($this->generateUrl('wt_galerie_view', array('id' => $galerie->getId())));
+		}
+
+		return $this->render('WTGalerieBundle:Galerie:edit.html.twig', array(
+	    	'form' => $form->createView(),
+	    	'galerie' => $galerie
+	    ));
   	}
 
-  	public function deleteAction($id)
-  	{
-    	// Ici, on récupérera l'annonce correspondant à $id
-    	// Ici, on gérera la suppression de l'annonce en question
-    	return $this->render('WTGalerieBundle:Galerie:delete.html.twig');
+
+  	public function deleteAction($id, Request $request)
+  	{   
+		// On récupère l'EntityManager
+		$em = $this->getDoctrine()->getManager();
+
+		// On récupère l'entité correspondant à l'id $id
+		$gal = $em->getRepository('WTGalerieBundle:Galerie')->find($id);
+		
+		// Si l'annonce n'existe pas, on affiche une erreur 404
+		if ($gal === null) {
+			throw $this->createNotFoundException("La galerie avec l'id ".$id." n'existe pas.");
+		}
+
+		// On crée un formulaire vide, qui ne contiendra que le champ CSRF
+    	// Cela permet de protéger la suppression d'annonce contre cette faille
+    	$form = $this->get('form.factory')->create();
+
+		if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+
+			$em->remove($gal);
+      		$em->flush();
+		 	// Si la requête est en POST, on deletea l'article
+		  	$request->getSession()->getFlashBag()->add('notice', 'Galerie bien supprimée.');
+		  	// Puis on redirige vers l'accueil
+		 	return $this->redirect($this->generateUrl('wt_galerie_home', array('page' =>1 )));
+		}
+		// Si la requête est en GET, on affiche une page de confirmation avant de delete
+		return $this->render('WTGalerieBundle:Galerie:delete.html.twig',array(
+		  'gal' => $gal,
+		  'form' => $form->createView(),
+		));
   	}
 
 
@@ -227,12 +245,31 @@ class GalerieController extends Controller
 
 public function testAction(Request $request)
     {
-       $value="1234value";
+       /*$value="1234value";
 
         return $this->renderTest(array(
             'value' => $value,
             'nomber' =>12,
-        ));
+        ));*/
+
+        $gal = new Galerie;
+        $gal->setCreationdate(new \Datetime());  // Champ « date » OK
+		$gal->setName('abc');           // Champ « title » incorrect : moins de 10 caractères
+    	//$advert->setContent('blabla');    // Champ « content » incorrect : on ne le définit pas
+    	#$gal->setOwner('User');            // Champ « author » incorrect : moins de 2 caractères
+    	
+    	// On récupère le service validator
+    	$validator = $this->get('validator');
+    	// On déclenche la validation sur notre object
+    	$listErrors = $validator->validate($gal);
+
+    	// Si $listErrors n'est pas vide, on affiche les erreurs
+    	if(count($listErrors) > 0) {
+      		// $listErrors est un objet, sa méthode __toString permet de lister joliement les erreurs
+      		return new Response((string) $listErrors);
+    	} else {
+      		return new Response("La galerie est valide !");
+    	}
     }
 
 

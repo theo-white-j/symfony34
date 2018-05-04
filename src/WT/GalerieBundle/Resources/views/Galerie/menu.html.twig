@@ -1,10 +1,27 @@
 
 <ul class="nav nav-pills nav-stacked">
-  {% for advert in listAdverts %}
+  {% for gal in listgals %}
     <li>
-      <a href="{{ path('wt_galerie_view', {'id': advert.id}) }}">
-        {{ advert.title }}
+      <a href="{{ path('wt_galerie_view', {'id': gal.id}) }}">
+        {{ gal.name }}
       </a>
     </li>
   {% endfor %}
+</ul>
+
+
+
+<ul class="nav nav-pills nav-stacked">
+	<p>
+    	Please fix bellow test: in "menuAction" and Menu.html.twig
+    </p>
+  {% for gal2 in listgals2 %}
+    <li>
+      <a href="{{ path('wt_galerie_view', {'id': gal2.id}) }}">
+        -----{{ gal2.name }}----
+      </a>
+    </li>
+
+  {% endfor %}
+
 </ul>

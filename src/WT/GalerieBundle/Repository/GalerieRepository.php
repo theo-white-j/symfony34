@@ -1,7 +1,8 @@
 <?php
 
 namespace WT\GalerieBundle\Repository;
-
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 /**
  * GalerieRepository
  *
@@ -10,4 +11,36 @@ namespace WT\GalerieBundle\Repository;
  */
 class GalerieRepository extends \Doctrine\ORM\EntityRepository
 {
+
+	public function getGaleries($page, $nbPerPage)
+	{
+
+		/*$query = $this->createQueryBuilder('g')
+			->orderBy('g.editiondate', 'DESC')
+			->getQuery();
+    	return $query->getResult();*/
+
+		$query = $this->createQueryBuilder('g')
+		// Jointure sur l'attribut image
+		->leftJoin('g.owner', 'o')
+		->addSelect('o')
+		// Jointure sur l'attribut categories
+		->leftJoin('g.galerieitems', 'i')
+		->addSelect('i')
+		->orderBy('g.editiondate', 'DESC')
+		->getQuery();
+
+		//return $query->getResult();
+
+		//pagination:::::::::::
+		$query
+		// On définit l'annonce à partir de laquelle commencer la liste
+		->setFirstResult(($page-1) * $nbPerPage)
+		// Ainsi que le nombre d'annonce à afficher sur une page
+		->setMaxResults($nbPerPage);
+
+		// Enfin, on retourne l'objet Paginator correspondant à la requête construite
+		// (n'oubliez pas le use correspondant en début de fichier)
+		return new Paginator($query, true);
+	}
 }

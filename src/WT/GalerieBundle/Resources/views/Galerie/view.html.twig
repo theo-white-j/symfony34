@@ -18,13 +18,10 @@
 {# {{ dump(galerie.getGalerieitems().first ) }} #}
     {% if not galItems.empty %}
       {% for galItem in galItems %}
-{{ dump(galItem) }}
+
         <div>
-          <p>{{galItem.name}}</p>
-          <p>{{galItem.info}}</p>
-          <p>{{galItem.type}}</p>
-          <p>{{galItem.url}}</p>
-          <p>{{galItem.path}}</p>
+          {#  src="{{ asset(advert.image.uploadDir ~ '/' ~ advert.image.id ~ '.' ~ advert.image.extention) }}" #}
+          <img src="{{ asset(galItem.webPath) }}" alt="{{ galItem.alt }}"/>
           <p>{% if  galItem.creationdate ==  galItem.editiondate %}
               crée le {{ galItem.creationdate|date('d/m/Y') }}
             {% else %}
@@ -33,10 +30,10 @@
           </p>
           {# {% if not loop.last %}, {% endif %} #}
         </div>
-
-
-          
+                      {{ dump(galItem) }}    
       {% endfor %}
+    {% else %}
+      <p> Galerie Vide.</p>
     {% endif %}
     
   </div>

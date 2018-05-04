@@ -1,9 +1,13 @@
 <?php
 
 namespace WT\GalerieBundle\Entity;
-use Doctrine\Common\Collections\ArrayCollection;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert; //for valdation
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /*
 !!! use galerie->addGalerieitem never galerieitem->setgalerie()
 
@@ -16,11 +20,21 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="galerie")
  * @ORM\Entity(repositoryClass="WT\GalerieBundle\Repository\GalerieRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields="name", message="Une annonce existe déjà avec ce titre.")
  */
 class Galerie
 {
-    /* onetomany ->galerieitem  see GalerieItem */
-    /*onetoone ->user   see $this->$owner*/
+    /************************************************************************/
+    /* liste et info des relation de cette entité                           */
+    /* onetomany -> galerieitem     | bidirectional     owner:GalerieItem   */
+    /* onetoone  -> user            | unidir            owner:itself        */
+    /************************************************************************/
+    /* liste et info des relation de cette entité                           */
+    /* onetomany -> galerieitem     | bidirectional     owner:GalerieItem   */
+    /* onetoone  -> user            | unidir            owner:itself        */
+    /************************************************************************/
+    
 
 
     /**
@@ -34,12 +48,11 @@ class Galerie
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, unique=false)
+     * @ORM\Column(name="name", type="string", length=255, unique=true, nullable=false)
+     * @Assert\Length(min=4, minMessage="Le titre doit faire au moins {{ limit }} caractères.")
+     * @Assert\NotBlank()
      */
     private $name;
-
-
 
 
 //@var string
@@ -51,34 +64,61 @@ class Galerie
      */
     private $owner;
 
+
     /**
-     * @ORM\OneToMany(targetEntity="WT\GalerieBundle\Entity\GalerieItem", mappedBy="galerie")
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="WT\GalerieBundle\Entity\GalerieItem", mappedBy="galerie",cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $galerieitems; // Notez le « s », une annonce est liée à plusieurs candidatures
 
+/**********************************/
+    /**
+     * @ORM\OneToMany(targetEntity="WT\GalerieBundle\Entity\GalerieElement", mappedBy="galerie",cascade={"persist", "remove"})
+     * @Assert\Valid()
+     */
+    private $galerieelements; // Notez le « s », une annonce est liée à plusieurs candidatures
 
+/**********************************/
 
 
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="creationdate", type="datetime")
+     * @Assert\DateTime()
      */
     private $creationdate;
 
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="editiondate", type="datetime")
+     * @Assert\DateTime()
      */
     private $editiondate;
 
+    /**
+     * @var \Text
+     *
+     * @ORM\Column(name="descr", type="text", nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $descr;
 
 
+    /************************************************************************/
+    /* LES FONCTIONS                                                        */
+    /* Cyclebackfunction:                                                   */
+    /*    updateDate                                                        */
+    /************************************************************************/
 
     /**
      * Get id
-     *
      * @return int
      */
     public function getId()
@@ -86,11 +126,14 @@ class Galerie
         return $this->id;
     }
 
+
+
+
+
     /**
      * Set name
      *
      * @param string $name
-     *
      * @return Galerie
      */
     public function setName($name)
@@ -110,7 +153,7 @@ class Galerie
         return $this->name;
     }
 
-  
+
 
 
 
@@ -138,6 +181,9 @@ class Galerie
         return $this->creationdate;
     }
 
+
+
+
     /**
      * Set editiondate
      *
@@ -162,6 +208,9 @@ class Galerie
         return $this->editiondate;
     }
 
+
+
+
     public function __construct()
     {
         // Par défaut, la date de l'annonce est la date d'aujourd'hui
@@ -173,6 +222,15 @@ class Galerie
 
     
 
+
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setEditiondate(new \Datetime());
+    }
 
 
 
@@ -201,6 +259,9 @@ class Galerie
     {
         return $this->owner;
     }
+
+
+
 
     /**
      * Add galerieitem
@@ -239,5 +300,101 @@ class Galerie
     public function getGalerieitems()
     {
         return $this->galerieitems;
+    }
+/*****************************************/
+
+/**
+     * Add galerieitem
+     *
+     * @param \WT\galerieBundle\Entity\GalerieElement $galerieelement
+     *
+     * @return Galerie
+     */
+    public function addGalerieelement(\WT\galerieBundle\Entity\GalerieElement $galerieelement)
+    {
+
+        $this->galerieelement[] = $galerieelement;
+        // On lie le galerieItem  à la galerie
+        $galerieelement->setGalerie($this);
+        return $this;
+    }
+
+    /**
+     * Remove galerieitem
+     *
+     * @param \WT\galerieBundle\Entity\GalerieItem $galerieitem
+     */
+    public function removeGalerieelement(\WT\galerieBundle\Entity\GalerieElement $galerieelement)
+    {
+        $this->galerieelements->removeElement($GalerieElement);
+        
+        // Et si notre relation était facultative (nullable=true, ce qui n'est pas notre cas ici attention) :        
+        // $application->setAdvert(null);
+    }
+
+    /**
+     * Get galerieElements
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGalerieelements()
+    {
+        return $this->galerieelements;
+    }
+
+/**************************************/
+
+
+
+
+    /**
+     * Set slug.
+     *
+     * @param string $slug
+     *
+     * @return Galerie
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+
+
+
+    /**
+     * Set descr.
+     *
+     * @param string $descr
+     *
+     * @return Galerie
+     */
+    public function setDescr($descr)
+    {
+        $this->descr = $descr;
+
+        return $this;
+    }
+
+    /**
+     * Get descr.
+     *
+     * @return string
+     */
+    public function getDescr()
+    {
+        return $this->descr;
     }
 }

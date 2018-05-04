@@ -138,6 +138,11 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'wt_galerie_delete')), array (  '_controller' => 'WT\\GalerieBundle\\Controller\\GalerieController::deleteAction',));
             }
 
+            // wt_galerie_test
+            if ('/galerie/test' === $pathinfo) {
+                return array (  '_controller' => 'WT\\GalerieBundle\\Controller\\GalerieController::testAction',  '_route' => 'wt_galerie_test',);
+            }
+
         }
 
         elseif (0 === strpos($pathinfo, '/login')) {
@@ -337,6 +342,10 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             }
             not_fos_user_resetting_check_email:
 
+        }
+
+        if ('/' === $pathinfo && !$allow) {
+            throw new Symfony\Component\Routing\Exception\NoConfigurationException();
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

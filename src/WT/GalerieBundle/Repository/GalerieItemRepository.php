@@ -1,6 +1,7 @@
 <?php
 
 namespace WT\GalerieBundle\Repository;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * GalerieItemRepository
@@ -10,4 +11,13 @@ namespace WT\GalerieBundle\Repository;
  */
 class GalerieItemRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getLikeQueryBuilder($pattern)
+	{
+		return $this->createQueryBuilder('g')
+			->where('g.ispublished LIKE :pattern')
+			->setParameter('pattern', $pattern)
+
+    ;
+
+  }
 }

@@ -20,7 +20,7 @@
         ]
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.1.0",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "incenteev/composer-parameter-handler": "^2.0",
@@ -32,11 +32,12 @@
         "symfony/symfony": "3.4.*",
         "twig/twig": "^1.0||^2.0",
         "doctrine/doctrine-fixtures-bundle": "3.0.2",
-        "friendsofsymfony/user-bundle": "dev-master"
+        "friendsofsymfony/user-bundle": "dev-master",
+        "stof/doctrine-extensions-bundle": "~1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "4.0.8"
     },
     "scripts": {
         "symfony-scripts": [

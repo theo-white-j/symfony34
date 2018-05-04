@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new WT\GalerieBundle\WTGalerieBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new WT\UserBundle\WTUserBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -1,14 +1,23 @@
 <?php
 
 namespace WT\GalerieBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
+
+/*
+!!! use galerie->addGalerieitem never galerieitem->setgalerie()
+
+
+*/
+
+
+
 
 /**
  * GalerieItem
  *
  * @ORM\Table(name="galerie_item")
  * @ORM\Entity(repositoryClass="WT\GalerieBundle\Repository\GalerieItemRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class GalerieItem
 {
@@ -91,7 +100,7 @@ class GalerieItem
      *
      * @ORM\Column(name="ispublished", type="boolean")
      */
-    private $ispublished=true;
+    private $ispublished =true;
 
     /**
      * @var string
@@ -100,6 +109,7 @@ class GalerieItem
      */
     private $extention;
 
+    private $file;
 
 
 
@@ -112,9 +122,17 @@ class GalerieItem
         // Par défaut, la date de l'annonce est la date d'aujourd'hui
         $this->creationdate = new \Datetime();
         $this->editiondate = $this->creationdate;
+        //$this->ispublished = true;
 
     }
 
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setEditiondate(new \Datetime());
+    }
 
 
 
